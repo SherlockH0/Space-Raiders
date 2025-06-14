@@ -1,8 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://b4sx5aas8qkwe"]
+[gd_scene load_steps=7 format=3 uid="uid://b4sx5aas8qkwe"]
 
 [ext_resource type="Script" uid="uid://b7i6lu6v3g2uq" path="res://script/player.gd" id="1_3vyb7"]
 [ext_resource type="ArrayMesh" uid="uid://k238080ynqu2" path="res://art/kenney_space-kit/Models/OBJ format/craft_miner.obj" id="2_g2els"]
 [ext_resource type="PackedScene" uid="uid://bfm7eb86ir4jy" path="res://scenes/bullet.tscn" id="2_qhqgy"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
+metallic = 1.0
+metallic_specular = 0.0
+roughness = 0.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dqkch"]
+albedo_color = Color(0.281559, 0.281559, 0.281559, 1)
+metallic = 1.0
+roughness = 0.26
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_3vyb7"]
 radius = 0.522216
@@ -18,6 +28,8 @@ bullet = ExtResource("2_qhqgy")
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
 mesh = ExtResource("2_g2els")
 skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("StandardMaterial3D_qhqgy")
+surface_material_override/1 = SubResource("StandardMaterial3D_dqkch")
 
 [node name="MarkerLeft" type="Marker3D" parent="Body"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.25, -1.25)

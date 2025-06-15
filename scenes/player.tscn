@@ -1,8 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://b4sx5aas8qkwe"]
+[gd_scene load_steps=9 format=3 uid="uid://b4sx5aas8qkwe"]
 
 [ext_resource type="Script" uid="uid://b7i6lu6v3g2uq" path="res://script/player.gd" id="1_3vyb7"]
 [ext_resource type="ArrayMesh" uid="uid://k238080ynqu2" path="res://art/kenney_space-kit/Models/OBJ format/craft_miner.obj" id="2_g2els"]
 [ext_resource type="PackedScene" uid="uid://bfm7eb86ir4jy" path="res://scenes/bullet.tscn" id="2_qhqgy"]
+[ext_resource type="Script" uid="uid://bj65difhj1xff" path="res://script/spacehip_movement_component.gd" id="4_dqkch"]
+[ext_resource type="Script" uid="uid://bpg28e135lnra" path="res://script/camera.gd" id="4_qlg0r"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_qhqgy"]
 metallic = 1.0
@@ -18,9 +20,10 @@ roughness = 0.26
 radius = 0.522216
 height = 2.46475
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("spaceship_movement")]
 script = ExtResource("1_3vyb7")
 bullet = ExtResource("2_qhqgy")
+spaceship_movement = NodePath("SpacehipMovementComponent")
 
 [node name="Body" type="Node3D" parent="."]
 
@@ -41,6 +44,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.25, -1.25)
 transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 0, 0.339966, 0)
 shape = SubResource("CapsuleShape3D_3vyb7")
 
-[node name="Camera3D" type="Camera3D" parent="."]
+[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("spaceship_movement")]
 transform = Transform3D(1, 7.72517e-09, -5.96373e-08, 7.97333e-09, 0.965926, 0.258819, 5.96046e-08, -0.258819, 0.965926, 0, 2, 4)
 doppler_tracking = 2
+script = ExtResource("4_qlg0r")
+spaceship_movement = NodePath("../SpacehipMovementComponent")
+
+[node name="SpacehipMovementComponent" type="Node3D" parent="." node_paths=PackedStringArray("physics_body", "body")]
+script = ExtResource("4_dqkch")
+physics_body = NodePath("..")
+body = NodePath("../Body")
+acceleration = 120.0

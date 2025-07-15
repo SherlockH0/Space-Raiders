@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://ctmdkfxgasnuu"]
+
+[ext_resource type="Script" uid="uid://oupb75ij3egn" path="res://script/distance_component.gd" id="1_xpshm"]
+
+[node name="DistanceComponent" type="VisibleOnScreenNotifier3D"]
+script = ExtResource("1_xpshm")
+
+[connection signal="screen_entered" from="." to="." method="_on_screen_entered"]
+[connection signal="screen_exited" from="." to="." method="_on_screen_exited"]

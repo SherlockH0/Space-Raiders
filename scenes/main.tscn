@@ -1,34 +1,24 @@
-[gd_scene load_steps=13 format=3 uid="uid://tpuygo1qfel0"]
+[gd_scene load_steps=15 format=3 uid="uid://tpuygo1qfel0"]
 
-[ext_resource type="PackedScene" uid="uid://b4sx5aas8qkwe" path="res://scenes/player.tscn" id="1_o5qli"]
-[ext_resource type="Shader" uid="uid://rdr0c5csymte" path="res://shaders/sky.gdshader" id="1_sugp2"]
-[ext_resource type="Texture2D" uid="uid://0sqlirw70sxd" path="res://art/deb65w9-4b493ab4-88e0-4018-8c7f-e183e1a78a80-3818022336.jpg" id="2_jyhfs"]
-[ext_resource type="PackedScene" uid="uid://c8fldkc7o2kct" path="res://scenes/enemy.tscn" id="3_sugp2"]
+[ext_resource type="PackedScene" uid="uid://b4sx5aas8qkwe" path="res://script/player.tscn" id="1_o5qli"]
+[ext_resource type="Environment" uid="uid://d3qk3iwkwvtp0" path="res://scenes/env.tres" id="1_sugp2"]
+[ext_resource type="Script" uid="uid://dlr0pgi24f861" path="res://scenes/main.gd" id="1_tipki"]
+[ext_resource type="PackedScene" uid="uid://dkuavfhk6e3ej" path="res://scenes/enemy.tscn" id="3_tefeu"]
+[ext_resource type="PackedScene" uid="uid://cn1q57audbcog" path="res://scenes/planet.tscn" id="4_jyhfs"]
 [ext_resource type="Shader" uid="uid://b8jgv1t33ghnp" path="res://scenes/blackhole.gdshader" id="5_tbgi4"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_jyhfs"]
-shader = ExtResource("1_sugp2")
-shader_parameter/skyTexture = ExtResource("2_jyhfs")
-
-[sub_resource type="Sky" id="Sky_tbgi4"]
-sky_material = SubResource("ShaderMaterial_jyhfs")
-
-[sub_resource type="Environment" id="Environment_0wfyh"]
-background_mode = 2
-sky = SubResource("Sky_tbgi4")
-ambient_light_source = 3
-reflected_light_source = 2
+[ext_resource type="PackedScene" uid="uid://c8qqohdvv4ge0" path="res://scenes/meteor.tscn" id="5_tefeu"]
+[ext_resource type="Script" uid="uid://c0e0rxtdyvsgb" path="res://script/debug_panel.gd" id="8_85g3d"]
+[ext_resource type="Script" uid="uid://uvub87r5siv0" path="res://script/fps.gd" id="8_tipki"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_0wfyh"]
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_sugp2"]
-data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+[sub_resource type="BoxShape3D" id="BoxShape3D_tbgi4"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_tefeu"]
 render_priority = 0
 shader = ExtResource("5_tbgi4")
 shader_parameter/Color = Color(0, 0, 0, 1)
-shader_parameter/glow_color = Color(0.941176, 0, 0, 1)
+shader_parameter/glow_color = Color(0.246131, 0.452752, 1, 1)
 shader_parameter/dist = 0.5
 shader_parameter/speed = 0.5
 shader_parameter/glow_intensity = 0.5
@@ -37,14 +27,24 @@ shader_parameter/posMult = 0.4
 
 [sub_resource type="SphereMesh" id="SphereMesh_jyhfs"]
 material = SubResource("ShaderMaterial_tefeu")
+radius = 1.066
+
+[sub_resource type="BoxMesh" id="BoxMesh_sugp2"]
+size = Vector3(10, 1, 10)
 
 [node name="Main" type="Node3D"]
+script = ExtResource("1_tipki")
+enemy_scene = ExtResource("3_tefeu")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_0wfyh")
+environment = ExtResource("1_sugp2")
 
-[node name="Player" parent="." instance=ExtResource("1_o5qli")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0183265, 7.02815)
+[node name="Player" parent="." groups=["gravitons"] instance=ExtResource("1_o5qli")]
+forward_torque_power = 350.0
+side_torque_power = 800.0
+rotate_torque = 10.0
+thrust_power = 30.0
+take_off_power = 15.0
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 20, 0, 0, 0, 5, 0, 10, -19.7804)
@@ -53,12 +53,642 @@ mesh = SubResource("BoxMesh_0wfyh")
 [node name="StaticBody3D" type="StaticBody3D" parent="MeshInstance3D2"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="MeshInstance3D2/StaticBody3D"]
-shape = SubResource("ConcavePolygonShape3D_sugp2")
-
-[node name="Enemy" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_sugp2")]
-transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -3, 3, 6)
-player = NodePath("../Player")
+shape = SubResource("BoxShape3D_tbgi4")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.516982, 0, -0.855997, 0, 1, 0, 0.855997, 0, 0.516982, 5.00964, 1.99004, 39.8929)
 mesh = SubResource("SphereMesh_jyhfs")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, 5.92336, -2.89585, -8.67924)
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -13.8968, -0.251197, 12.3873)
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="."]
+transform = Transform3D(-4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0, 1, -11.3617, 13.6068, -2.65107)
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="."]
+transform = Transform3D(-2.3052e-09, 0.0527368, 0.998608, -1, -4.37114e-08, 0, 4.36506e-08, -0.998608, 0.0527368, -11.3617, 13.6068, -2.65107)
+mesh = SubResource("BoxMesh_sugp2")
+
+[node name="Planet" parent="." instance=ExtResource("4_jyhfs")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.06365, -11.9626, -0.107754)
+label = "A4f"
+
+[node name="Meteors" type="Node" parent="."]
+
+[node name="Meteor" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.466999, 0, -64.5072)
+
+[node name="Meteor2" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.945513, 0, -0.325585, 0, 1, 0, 0.325585, 0, 0.945513, 8.12457, 0, -68.2343)
+
+[node name="Meteor3" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.937385, 0, 0.348294, 0, 1, 0, -0.348294, 0, 0.937385, -8.06679, 0, -65.3824)
+
+[node name="Meteor4" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.999709, 0, 0.0241181, 0, 1, 0, -0.0241181, 0, 0.999709, -1.31132, 0, -71.8686)
+
+[node name="Meteor5" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.675577, 0, -0.737289, 0, 1, 0, 0.737289, 0, 0.675577, -18.1927, 0, -63.25)
+
+[node name="Meteor6" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.398717, 0, -0.917074, 0, 1, 0, 0.917074, 0, 0.398717, -9.64049, 0, -59.4335)
+
+[node name="Meteor7" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.89007, 0, -0.455825, 0, 1, 0, 0.455825, 0, 0.89007, -22.6817, 0, -69.4445)
+
+[node name="Meteor8" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.693163, 0, -0.720781, 0, 1, 0, 0.720781, 0, 0.693163, -12.3336, 0, -64.3362)
+
+[node name="Meteor9" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.756949, 0, -0.653473, 0, 1, 0, 0.653473, 0, 0.756949, 23.892, 0, -45.0731)
+
+[node name="Meteor10" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.502945, 0, -0.864319, 0, 1, 0, 0.864319, 0, 0.502945, 32.831, 0, -42.28)
+
+[node name="Meteor11" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.937154, 0, -0.348916, 0, 1, 0, 0.348916, 0, 0.937154, 18.7113, 0, -50.7018)
+
+[node name="Meteor12" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.77249, 0, -0.635027, 0, 1, 0, 0.635027, 0, 0.77249, 28.0634, 0, -51.197)
+
+[node name="Meteor13" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.029579, 0, -0.999562, 0, 1, 0, 0.999562, 0, 0.029579, 9.65297, 0, -55.7047)
+
+[node name="Meteor14" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.297475, 0, -0.95473, 0, 1, 0, 0.95473, 0, -0.297475, 13.6326, 0, -47.2272)
+
+[node name="Meteor15" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.375868, 0, -0.926673, 0, 1, 0, 0.926673, 0, 0.375868, 10.303, 0, -63.3271)
+
+[node name="Meteor16" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0536779, 0, -0.998558, 0, 1, 0, 0.998558, 0, 0.0536779, 14.7979, 0, -52.6982)
+
+[node name="Meteor17" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.576461, 0, -0.817125, 0, 1, 0, 0.817125, 0, 0.576461, 52.8649, 0, -20.6719)
+
+[node name="Meteor18" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.279008, 0, -0.960289, 0, 1, 0, 0.960289, 0, 0.279008, 60.8631, 0, -15.8001)
+
+[node name="Meteor19" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.824966, 0, -0.565183, 0, 1, 0, 0.565183, 0, 0.824966, 49.199, 0, -27.3864)
+
+[node name="Meteor20" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.596001, 0, -0.802984, 0, 1, 0, 0.802984, 0, 0.596001, 58.3933, 0, -25.6054)
+
+[node name="Meteor21" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.213013, 0, -0.977049, 0, 1, 0, 0.977049, 0, -0.213013, 41.6194, 0, -34.4313)
+
+[node name="Meteor22" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.519519, 0, -0.854459, 0, 1, 0, 0.854459, 0, -0.519519, 43.4309, 0, -25.243)
+
+[node name="Meteor23" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.140625, 0, -0.990063, 0, 1, 0, 0.990063, 0, 0.140625, 44.0934, 0, -41.6702)
+
+[node name="Meteor24" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.189387, 0, -0.981903, 0, 1, 0, 0.981903, 0, -0.189387, 45.8845, 0, -30.2698)
+
+[node name="Meteor25" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.0976177, 0, -0.995224, 0, 1, 0, 0.995224, 0, -0.0976177, 51.0268, 0, 10.4355)
+
+[node name="Meteor26" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.416328, 0, -0.909214, 0, 1, 0, 0.909214, 0, -0.416328, 53.8974, 0, 19.3498)
+
+[node name="Meteor27" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.255125, 0, -0.966908, 0, 1, 0, 0.966908, 0, 0.255125, 52.6397, 0, 2.9574)
+
+[node name="Meteor28" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.0735863, 0, -0.997289, 0, 1, 0, 0.997289, 0, -0.0735863, 58.4354, 0, 10.3138)
+
+[node name="Meteor29" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.799716, 0, -0.600378, 0, 1, 0, 0.600378, 0, -0.799716, 51.5059, 0, -7.32834)
+
+[node name="Meteor30" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.951616, 0, -0.30729, 0, 1, 0, 0.30729, 0, -0.951616, 46.8728, 0, 0.810503)
+
+[node name="Meteor31" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.540534, 0, -0.841322, 0, 1, 0, 0.841322, 0, -0.540534, 58.1091, 0, -11.1912)
+
+[node name="Meteor32" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.785004, 0, -0.619491, 0, 1, 0, 0.619491, 0, -0.785004, 52.015, 0, -1.39114)
+
+[node name="Meteor33" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.709165, 0, 0.705043, 0, 1, 0, -0.705043, 0, -0.709165, -43.6071, 0, 29.4342)
+
+[node name="Meteor34" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.440973, 0, 0.89752, 0, 1, 0, -0.89752, 0, -0.440973, -52.3277, 0, 26.0199)
+
+[node name="Meteor35" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.910323, 0, 0.413899, 0, 1, 0, -0.413899, 0, -0.910323, -38.8346, 0, 35.413)
+
+[node name="Meteor36" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.725963, 0, 0.687734, 0, 1, 0, -0.687734, 0, -0.725963, -48.1984, 0, 35.2499)
+
+[node name="Meteor37" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0407248, 0, 0.99917, 0, 1, 0, -0.99917, 0, 0.0407248, -30.1502, 0, 41.04)
+
+[node name="Meteor38" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.36382, 0, 0.931469, 0, 1, 0, -0.931469, 0, 0.36382, -33.5244, 0, 32.3038)
+
+[node name="Meteor39" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.30983, 0, 0.950792, 0, 1, 0, -0.950792, 0, -0.30983, -31.3342, 0, 48.5979)
+
+[node name="Meteor40" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0166149, 0, 0.999862, 0, 1, 0, -0.999862, 0, 0.0166149, -35.0712, 0, 37.6794)
+
+[node name="Meteor41" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.076075, 0, 0.997102, 0, 1, 0, -0.997102, 0, -0.076075, -47.1797, 0, -1.52193)
+
+[node name="Meteor42" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.252711, 0, 0.967542, 0, 1, 0, -0.967542, 0, 0.252711, -51.5497, 0, -9.80506)
+
+[node name="Meteor43" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.418596, 0, 0.908172, 0, 1, 0, -0.908172, 0, -0.418596, -47.4743, 0, 6.12242)
+
+[node name="Meteor44" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.100101, 0, 0.994977, 0, 1, 0, -0.994977, 0, -0.100101, -54.4555, 0, -0.120037)
+
+[node name="Meteor45" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.683758, 0, 0.729709, 0, 1, 0, -0.729709, 0, 0.683758, -44.5777, 0, 16.0568)
+
+[node name="Meteor46" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.884084, 0, 0.467328, 0, 1, 0, -0.467328, 0, 0.884084, -41.4229, 0, 7.23899)
+
+[node name="Meteor47" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.386791, 0, 0.922167, 0, 1, 0, -0.922167, 0, 0.386791, -50.4127, 0, 21.004)
+
+[node name="Meteor48" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.66596, 0, 0.745988, 0, 1, 0, -0.745988, 0, 0.66596, -46.1065, 0, 10.2973)
+
+[node name="Meteor49" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.167302, 0, 0.985906, 0, 1, 0, -0.985906, 0, 0.167302, -50.5224, 0, -39.2535)
+
+[node name="Meteor50" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.479182, 0, 0.877715, 0, 1, 0, -0.877715, 0, 0.479182, -52.7596, 0, -48.3475)
+
+[node name="Meteor51" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.186558, 0, 0.982444, 0, 1, 0, -0.982444, 0, -0.186558, -52.6567, 0, -31.9073)
+
+[node name="Meteor52" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.143476, 0, 0.989654, 0, 1, 0, -0.989654, 0, 0.143476, -57.9213, 0, -39.6526)
+
+[node name="Meteor53" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.839923, 0, 0.542705, 0, 1, 0, -0.542705, 0, 0.839923, -52.2484, 0, -21.5673)
+
+[node name="Meteor54" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.970855, 0, 0.239669, 0, 1, 0, -0.239669, 0, 0.970855, -47.0549, 0, -29.3605)
+
+[node name="Meteor55" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.598311, 0, 0.801264, 0, 1, 0, -0.801264, 0, 0.598311, -59.1067, 0, -18.1779)
+
+[node name="Meteor56" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.82659, 0, 0.562805, 0, 1, 0, -0.562805, 0, 0.82659, -52.3391, 0, -27.5256)
+
+[node name="Meteor57" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.770903, 0, 0.636953, 0, 1, 0, -0.636953, 0, 0.770903, -27.2869, 0, -60.0178)
+
+[node name="Meteor58" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.93628, 0, 0.351253, 0, 1, 0, -0.351253, 0, 0.93628, -23.0376, 0, -68.3635)
+
+[node name="Meteor59" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.500786, 0, 0.865571, 0, 1, 0, -0.865571, 0, 0.500786, -33.703, 0, -55.8518)
+
+[node name="Meteor60" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.755316, 0, 0.655361, 0, 1, 0, -0.655361, 0, 0.755316, -32.6266, 0, -65.1549)
+
+[node name="Meteor61" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.990423, 0, -0.138067, 0, 1, 0, 0.138067, 0, 0.990423, -40.1509, 0, -47.7582)
+
+[node name="Meteor62" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.891505, 0, -0.453011, 0, 1, 0, 0.453011, 0, 0.891505, -31.127, 0, -50.2634)
+
+[node name="Meteor63" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.976496, 0, 0.215536, 0, 1, 0, -0.215536, 0, 0.976496, -47.5571, 0, -49.6743)
+
+[node name="Meteor64" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.993465, 0, -0.11414, 0, 1, 0, 0.11414, 0, 0.993465, -36.326, 0, -52.3276)
+
+[node name="Meteor65" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.930699, 0, -0.365787, 0, 1, 0, 0.365787, 0, -0.930699, 10.3158, 0, 59.4083)
+
+[node name="Meteor66" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.999082, 0, -0.0428348, 0, 1, 0, 0.0428348, 0, -0.999082, 3.68297, 0, 66.0199)
+
+[node name="Meteor67" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.745022, 0, -0.66704, 0, 1, 0, 0.66704, 0, -0.745022, 17.709, 0, 57.443)
+
+[node name="Meteor68" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.921606, 0, -0.388127, 0, 1, 0, 0.388127, 0, -0.921606, 13.7943, 0, 65.9507)
+
+[node name="Meteor69" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.898449, 0, 0.439077, 0, 1, 0, -0.439077, 0, -0.898449, 26.3532, 0, 51.7544)
+
+[node name="Meteor70" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.706539, 0, 0.707674, 0, 1, 0, -0.707674, 0, -0.706539, 16.9976, 0, 51.3307)
+
+[node name="Meteor71" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.995121, 0, 0.0986597, 0, 1, 0, -0.0986597, 0, -0.995121, 32.797, 0, 55.8776)
+
+[node name="Meteor72" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.908778, 0, 0.41728, 0, 1, 0, -0.41728, 0, -0.908778, 21.2975, 0, 54.9086)
+
+[node name="Meteor73" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.943524, 0, 0.331305, 0, 1, 0, -0.331305, 0, -0.943524, -19.4638, 0, 50.2312)
+
+[node name="Meteor74" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.784246, 0, 0.62045, 0, 1, 0, -0.62045, 0, -0.784246, -28.805, 0, 50.9015)
+
+[node name="Meteor75" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.999837, 0, -0.0180632, 0, 1, 0, 0.0180632, 0, -0.999837, -12.5832, 0, 53.5749)
+
+[node name="Meteor76" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.95124, 0, 0.308452, 0, 1, 0, -0.308452, 0, -0.95124, -21.1061, 0, 57.4566)
+
+[node name="Meteor77" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.393156, 0, 0.919472, 0, 1, 0, -0.919472, 0, -0.393156, -2.32267, 0, 54.9177)
+
+[node name="Meteor78" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.0723679, 0, 0.997378, 0, 1, 0, -0.997378, 0, -0.0723679, -9.12749, 0, 48.4833)
+
+[node name="Meteor79" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.688785, 0, 0.724966, 0, 1, 0, -0.724966, 0, -0.688785, -0.139498, 0, 62.2495)
+
+[node name="Meteor80" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.415217, 0, 0.909722, 0, 1, 0, -0.909722, 0, -0.415217, -8.21079, 0, 54.0014)
+
+[node name="Meteor81" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.204923, 0, -0.978778, 0, 1, 0, 0.978778, 0, 0.204923, 47.6648, 0, 17.5952)
+
+[node name="Meteor82" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.124918, 0, -0.992167, 0, 1, 0, 0.992167, 0, -0.124918, 53.0735, 0, 25.2406)
+
+[node name="Meteor83" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.532994, 0, -0.846119, 0, 1, 0, 0.846119, 0, 0.532994, 46.9641, 0, 9.97731)
+
+[node name="Meteor84" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.22847, 0, -0.973551, 0, 1, 0, 0.973551, 0, 0.22847, 54.6969, 0, 15.2603)
+
+[node name="Meteor85" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.815906, 0, -0.578185, 0, 1, 0, 0.578185, 0, -0.815906, 40.8189, 0, 9.65609)
+
+[node name="Meteor86" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.56344, 0, -0.826157, 0, 1, 0, 0.826157, 0, -0.56344, 45.0657, 0, 6.01545)
+
+[node name="Meteor87" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.484489, 0, -0.874797, 0, 1, 0, 0.874797, 0, -0.484489, 33.6349, 0, 45.4197)
+
+[node name="Meteor88" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.742911, 0, -0.66939, 0, 1, 0, 0.66939, 0, -0.742911, 32.7328, 0, 54.7414)
+
+[node name="Meteor89" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.149466, 0, -0.988767, 0, 1, 0, 0.988767, 0, -0.149466, 38.0825, 0, 39.1955)
+
+[node name="Meteor90" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.46325, 0, -0.886228, 0, 1, 0, 0.886228, 0, -0.46325, 40.4836, 0, 48.2476)
+
+[node name="Meteor91" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.972288, 0, -0.233785, 0, 1, 0, 0.233785, 0, -0.972288, 41.123, 0, 29.3042)
+
+[node name="Meteor92" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.995428, 0, 0.0955157, 0, 1, 0, -0.0955157, 0, -0.995428, 33.6408, 0, 34.9366)
+
+[node name="Meteor93" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.829983, 0, -0.557789, 0, 1, 0, 0.557789, 0, -0.829983, 48.7168, 0, 28.3784)
+
+[node name="Meteor94" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.966367, 0, -0.257167, 0, 1, 0, 0.257167, 0, -0.966367, 39.2345, 0, 34.956)
+
+[node name="Meteor95" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.978689, 0, -0.20535, 0, 1, 0, 0.20535, 0, 0.978689, 12.3685, -2.50525, -63.6091)
+
+[node name="Meteor96" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.858504, 0, -0.512807, 0, 1, 0, 0.512807, 0, 0.858504, 21.5424, -2.50525, -65.4925)
+
+[node name="Meteor97" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.988931, 0, 0.148379, 0, 1, 0, -0.148379, 0, 0.988931, 5.11043, -2.50525, -66.0262)
+
+[node name="Meteor98" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.983357, 0, -0.181686, 0, 1, 0, 0.181686, 0, 0.983357, 13.0539, -2.50525, -70.9869)
+
+[node name="Meteor99" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.509777, 0, -0.860306, 0, 1, 0, 0.860306, 0, 0.509777, -5.23761, -2.50525, -66.0186)
+
+[node name="Meteor100" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.201899, 0, -0.979406, 0, 1, 0, 0.979406, 0, 0.201899, 2.34866, -2.50525, -60.5273)
+
+[node name="Meteor101" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.777497, 0, -0.628886, 0, 1, 0, 0.628886, 0, 0.777497, -8.35886, -2.50525, -73.0029)
+
+[node name="Meteor102" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.530378, 0, -0.847761, 0, 1, 0, 0.847761, 0, 0.530378, 0.719731, -2.50525, -65.8785)
+
+[node name="Meteor103" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.606627, 0, -0.794987, 0, 1, 0, 0.794987, 0, 0.606627, 32.2176, -2.50525, -39.587)
+
+[node name="Meteor104" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.314738, 0, -0.949179, 0, 1, 0, 0.949179, 0, 0.314738, 40.3925, -2.50525, -35.0178)
+
+[node name="Meteor105" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.845532, 0, -0.533924, 0, 1, 0, 0.533924, 0, 0.845532, 28.3032, -2.50525, -46.1597)
+
+[node name="Meteor106" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.625624, 0, -0.780125, 0, 1, 0, 0.780125, 0, 0.625624, 37.5576, -2.50525, -44.7238)
+
+[node name="Meteor107" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.176312, 0, -0.984334, 0, 1, 0, 0.984334, 0, -0.176312, 20.4652, -2.50525, -52.9161)
+
+[node name="Meteor108" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.487189, 0, -0.873296, 0, 1, 0, 0.873296, 0, -0.487189, 22.6192, -2.50525, -43.802)
+
+[node name="Meteor109" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.177566, 0, -0.984109, 0, 1, 0, 0.984109, 0, 0.177566, 22.6667, -2.50525, -60.2425)
+
+[node name="Meteor110" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.15252, 0, -0.9883, 0, 1, 0, 0.9883, 0, -0.15252, 24.8831, -2.50525, -48.9171)
+
+[node name="Meteor111" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.396379, 0, -0.918087, 0, 1, 0, 0.918087, 0, 0.396379, 55.5622, -2.50525, -9.75626)
+
+[node name="Meteor112" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0758663, 0, -0.997118, 0, 1, 0, 0.997118, 0, 0.0758663, 62.3896, -2.50525, -3.34582)
+
+[node name="Meteor113" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.691324, 0, -0.722545, 0, 1, 0, 0.722545, 0, 0.691324, 53.3534, -2.50525, -17.0804)
+
+[node name="Meteor114" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.418406, 0, -0.90826, 0, 1, 0, 0.90826, 0, 0.418406, 61.9859, -2.50525, -13.4493)
+
+[node name="Meteor115" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.409111, 0, -0.912485, 0, 1, 0, 0.912485, 0, -0.409111, 47.3819, -2.50525, -25.5317)
+
+[node name="Meteor116" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.683911, 0, -0.729566, 0, 1, 0, 0.729566, 0, -0.683911, 47.268, -2.50525, -16.1672)
+
+[node name="Meteor117" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.0656818, 0, -0.997841, 0, 1, 0, 0.997841, 0, -0.0656818, 51.2897, -2.50525, -32.1083)
+
+[node name="Meteor118" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.386985, 0, -0.922086, 0, 1, 0, 0.922086, 0, -0.386985, 50.7016, -2.50525, -20.583)
+
+[node name="Meteor119" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.299907, 0, -0.953969, 0, 1, 0, 0.953969, 0, -0.299907, 47.3754, -2.50525, 20.3107)
+
+[node name="Meteor120" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.594163, 0, -0.804344, 0, 1, 0, 0.804344, 0, -0.594163, 48.3543, -2.50525, 29.6246)
+
+[node name="Meteor121" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0511332, 0, -0.998692, 0, 1, 0, 0.998692, 0, 0.0511332, 50.4896, -2.50525, 13.3232)
+
+[node name="Meteor122" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.276812, 0, -0.960924, 0, 1, 0, 0.960924, 0, -0.276812, 54.6512, -2.50525, 21.713)
+
+[node name="Meteor123" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.905961, 0, -0.423362, 0, 1, 0, 0.423362, 0, -0.905961, 51.4922, -2.50525, 3.02386)
+
+[node name="Meteor124" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.994438, 0, -0.105327, 0, 1, 0, 0.105327, 0, -0.994438, 45.2865, -2.50525, 10.0378)
+
+[node name="Meteor125" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.70178, 0, -0.712394, 0, 1, 0, 0.712394, 0, -0.70178, 58.7478, -2.50525, 0.599302)
+
+[node name="Meteor126" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.895487, 0, -0.445088, 0, 1, 0, 0.445088, 0, -0.895487, 50.7712, -2.50525, 8.93907)
+
+[node name="Meteor127" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.549271, 0, 0.835644, 0, 1, 0, -0.835644, 0, -0.549271, -49.143, -2.50525, 19.4715)
+
+[node name="Meteor128" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.24727, 0, 0.968947, 0, 1, 0, -0.968947, 0, -0.24727, -56.9767, -2.50525, 14.3392)
+
+[node name="Meteor129" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.805928, 0, 0.592013, 0, 1, 0, -0.592013, 0, -0.805928, -45.7001, -2.50525, 26.3029)
+
+[node name="Meteor130" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.569265, 0, 0.822154, 0, 1, 0, -0.822154, 0, -0.569265, -54.8308, -2.50525, 24.2204)
+
+[node name="Meteor131" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.245037, 0, 0.969514, 0, 1, 0, -0.969514, 0, 0.245037, -38.3562, -2.50525, 33.5933)
+
+[node name="Meteor132" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.547344, 0, 0.836908, 0, 1, 0, -0.836908, 0, 0.547344, -39.8645, -2.50525, 24.3504)
+
+[node name="Meteor133" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.107982, 0, 0.994153, 0, 1, 0, -0.994153, 0, -0.107982, -41.067, -2.50525, 40.747)
+
+[node name="Meteor134" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.221583, 0, 0.975142, 0, 1, 0, -0.975142, 0, 0.221583, -42.4822, -2.50525, 29.2938)
+
+[node name="Meteor135" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.130301, 0, 0.991475, 0, 1, 0, -0.991475, 0, 0.130301, -46.2827, -2.50525, -11.5586)
+
+[node name="Meteor136" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.44601, 0, 0.895028, 0, 1, 0, -0.895028, 0, 0.44601, -48.8586, -2.50525, -20.5626)
+
+[node name="Meteor137" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.223182, 0, 0.974777, 0, 1, 0, -0.974777, 0, -0.223182, -48.1407, -2.50525, -4.13764)
+
+[node name="Meteor138" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.106351, 0, 0.994329, 0, 1, 0, -0.994329, 0, 0.106351, -53.6913, -2.50525, -11.6807)
+
+[node name="Meteor139" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.819032, 0, 0.573748, 0, 1, 0, -0.573748, 0, 0.819032, -47.3459, -2.50525, 6.17984)
+
+[node name="Meteor140" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.961209, 0, 0.275822, 0, 1, 0, -0.275822, 0, 0.961209, -42.4476, -2.50525, -1.8022)
+
+[node name="Meteor141" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.567916, 0, 0.823087, 0, 1, 0, -0.823087, 0, 0.567916, -54.0725, -2.50525, 9.82338)
+
+[node name="Meteor142" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.804956, 0, 0.593335, 0, 1, 0, -0.593335, 0, 0.804956, -47.6594, -2.50525, 0.229105)
+
+[node name="Meteor143" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.366193, 0, 0.930539, 0, 1, 0, -0.930539, 0, 0.366193, -41.8059, -2.50525, -49.1725)
+
+[node name="Meteor144" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.649209, 0, 0.76061, 0, 1, 0, -0.76061, 0, 0.649209, -42.128, -2.50525, -58.5321)
+
+[node name="Meteor145" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0191626, 0, 0.999816, 0, 1, 0, -0.999816, 0, 0.0191626, -45.4033, -2.50525, -42.4211)
+
+[node name="Meteor146" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.343643, 0, 0.9391, 0, 1, 0, -0.9391, 0, 0.343643, -48.9652, -2.50525, -51.0825)
+
+[node name="Meteor147" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.933468, 0, 0.358661, 0, 1, 0, -0.358661, 0, 0.933468, -47.1271, -2.50525, -32.2176)
+
+[node name="Meteor148" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.999381, 0, 0.0351959, 0, 1, 0, -0.0351959, 0, 0.999381, -40.4439, -2.50525, -38.7782)
+
+[node name="Meteor149" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.7501, 0, 0.661325, 0, 1, 0, -0.661325, 0, 0.7501, -54.5351, -2.50525, -30.3088)
+
+[node name="Meteor150" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.924546, 0, 0.38107, 0, 1, 0, -0.38107, 0, 0.924546, -45.9923, -2.50525, -38.0675)
+
+[node name="Meteor151" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.885272, 0, 0.465074, 0, 1, 0, -0.465074, 0, 0.885272, -14.8017, -2.50525, -64.7229)
+
+[node name="Meteor152" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.988457, 0, 0.151502, 0, 1, 0, -0.151502, 0, 0.988457, -8.92918, -2.50525, -72.0181)
+
+[node name="Meteor153" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.667859, 0, 0.744288, 0, 1, 0, -0.744288, 0, 0.667859, -21.9366, -2.50525, -61.9632)
+
+[node name="Meteor154" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.873798, 0, 0.48629, 0, 1, 0, -0.48629, 0, 0.873798, -18.9727, -2.50525, -70.847)
+
+[node name="Meteor155" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.940963, 0, -0.338508, 0, 1, 0, 0.338508, 0, 0.940963, -29.9091, -2.50525, -55.3661)
+
+[node name="Meteor156" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.77948, 0, -0.626427, 0, 1, 0, 0.626427, 0, 0.77948, -20.563, -2.50525, -55.9649)
+
+[node name="Meteor157" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.999946, 0, 0.0104194, 0, 1, 0, -0.0104194, 0, 0.999946, -36.7639, -2.50525, -58.7622)
+
+[node name="Meteor158" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.948854, 0, -0.315715, 0, 1, 0, 0.315715, 0, 0.948854, -25.2273, -2.50525, -59.0526)
+
+[node name="Meteor159" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.985979, 0, -0.166872, 0, 1, 0, 0.166872, 0, -0.985979, -2.52455, -2.50525, 59.8799)
+
+[node name="Meteor160" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.986587, 0, 0.16324, 0, 1, 0, -0.16324, 0, -0.986587, -10.3737, -2.50525, 64.9885)
+
+[node name="Meteor161" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.866121, 0, -0.499834, 0, 1, 0, 0.499834, 0, -0.866121, 5.11473, -2.50525, 59.4746)
+
+[node name="Meteor162" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.981667, 0, -0.190603, 0, 1, 0, 0.190603, 0, -0.981667, -0.463655, -2.50525, 66.9971)
+
+[node name="Meteor163" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.789138, 0, 0.614216, 0, 1, 0, -0.614216, 0, -0.789138, 14.7428, -2.50525, 55.6824)
+
+[node name="Meteor164" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.54616, 0, 0.837681, 0, 1, 0, -0.837681, 0, -0.54616, 5.67365, -2.50525, 53.3465)
+
+[node name="Meteor165" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.953654, 0, 0.300905, 0, 1, 0, -0.300905, 0, -0.953654, 20.2026, -2.50525, 61.0409)
+
+[node name="Meteor166" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.803722, 0, 0.595005, 0, 1, 0, -0.595005, 0, -0.803722, 9.14712, -2.50525, 57.7311)
+
+[node name="Meteor167" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.855382, 0, 0.517997, 0, 1, 0, -0.517997, 0, -0.855382, -29.785, -2.50525, 44.7831)
+
+[node name="Meteor168" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.640123, 0, 0.768272, 0, 1, 0, -0.768272, 0, -0.640123, -39.0647, -2.50525, 43.5208)
+
+[node name="Meteor169" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.982238, 0, 0.187638, 0, 1, 0, -0.187638, 0, -0.982238, -23.7377, -2.50525, 49.4684)
+
+[node name="Meteor170" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.867627, 0, 0.497216, 0, 1, 0, -0.497216, 0, -0.867627, -32.876, -2.50525, 51.5173)
+
+[node name="Meteor171" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.195963, 0, 0.980611, 0, 1, 0, -0.980611, 0, -0.195963, -13.9715, -2.50525, 52.8896)
+
+[node name="Meteor172" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.133986, 0, 0.990983, 0, 1, 0, -0.990983, 0, 0.133986, -19.31, -2.50525, 45.195)
+
+[node name="Meteor173" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.525234, 0, 0.850958, 0, 1, 0, -0.850958, 0, -0.525234, -13.3405, -2.50525, 60.5135)
+
+[node name="Meteor174" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.219557, 0, 0.9756, 0, 1, 0, -0.9756, 0, -0.219557, -19.546, -2.50525, 50.7837)
+
+[node name="Meteor175" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.000436321, 0, -1, 0, 1, 0, 1, 0, -0.000436321, 42.6149, -2.50525, 26.6274)
+
+[node name="Meteor176" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.325997, 0, -0.945371, 0, 1, 0, 0.945371, 0, -0.325997, 46.3382, -2.50525, 35.2206)
+
+[node name="Meteor177" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.347885, 0, -0.937537, 0, 1, 0, 0.937537, 0, 0.347885, 43.4934, -2.50525, 19.028)
+
+[node name="Meteor178" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(0.0236818, 0, -0.99972, 0, 1, 0, 0.99972, 0, 0.0236818, 49.9766, -2.50525, 25.7863)
+
+[node name="Meteor179" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.917248, 0, -0.398317, 0, 1, 0, 0.398317, 0, -0.917248, 37.5451, -2.50525, 17.4517)
+
+[node name="Meteor180" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.721084, 0, -0.692848, 0, 1, 0, 0.692848, 0, -0.721084, 42.4491, -2.50525, 14.7608)
+
+[node name="Meteor181" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.653804, 0, -0.756664, 0, 1, 0, 0.756664, 0, -0.653804, 23.1701, -2.50525, 50.978)
+
+[node name="Meteor182" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.864538, 0, -0.502567, 0, 1, 0, 0.502567, 0, -0.864538, 20.3731, -2.50525, 59.9157)
+
+[node name="Meteor183" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.349325, 0, -0.937002, 0, 1, 0, 0.937002, 0, -0.349325, 28.8011, -2.50525, 45.7997)
+
+[node name="Meteor184" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.635364, 0, -0.772213, 0, 1, 0, 0.772213, 0, -0.635364, 29.2922, -2.50525, 55.152)
+
+[node name="Meteor185" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.999575, 0, -0.029143, 0, 1, 0, 0.029143, 0, -0.999575, 33.808, -2.50525, 36.7436)
+
+[node name="Meteor186" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.9546, 0, 0.297891, 0, 1, 0, -0.297891, 0, -0.9546, 25.3287, -2.50525, 40.7195)
+
+[node name="Meteor187" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.926837, 0, -0.375464, 0, 1, 0, 0.375464, 0, -0.926837, 41.43, -2.50525, 37.3969)
+
+[node name="Meteor188" parent="Meteors" instance=ExtResource("5_tefeu")]
+transform = Transform3D(-0.998582, 0, -0.0532423, 0, 1, 0, 0.0532423, 0, -0.998582, 30.7992, -2.50525, 41.8872)
+
+[node name="SpawnTimer" type="Timer" parent="."]
+unique_name_in_owner = true
+wait_time = 5.0
+autostart = true
+
+[node name="Enemies" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Enemy2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
+transform = Transform3D(-0.649979, 0, 0.759952, 0, 1, 0, -0.759952, 0, -0.649979, 543.672, 14.0896, 0.255066)
+player = NodePath("../../Player")
+
+[node name="Enemy3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
+transform = Transform3D(0.4149, 0, -0.909867, 0, 1, 0, 0.909867, 0, 0.4149, -400.069, 14.0896, 0.255066)
+player = NodePath("../../Player")
+
+[node name="Enemy4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
+transform = Transform3D(-0.999798, 0, -0.0200872, 0, 1, 0, 0.0200872, 0, -0.999798, 0.125244, 14.0896, -346.181)
+player = NodePath("../../Player")
+
+[node name="Enemy" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.7218, 7.04481, 295.793)
+player = NodePath("../../Player")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+script = ExtResource("8_85g3d")
+
+[node name="FPS" type="Label" parent="CanvasLayer"]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_top = -23.0
+offset_right = 40.0
+grow_vertical = 0
+size_flags_vertical = 8
+script = ExtResource("8_tipki")
+
+[node name="SpawnRoot" type="Node" parent="."]
+
+[node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
+_spawnable_scenes = PackedStringArray("uid://b4sx5aas8qkwe", "uid://bfm7eb86ir4jy")
+spawn_path = NodePath("../SpawnRoot")
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32514, 1.97618, 0)
+
+[connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]

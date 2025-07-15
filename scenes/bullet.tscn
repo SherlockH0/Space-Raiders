@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bfm7eb86ir4jy"]
+[gd_scene load_steps=25 format=3 uid="uid://bfm7eb86ir4jy"]
 
 [ext_resource type="Script" uid="uid://83w8efd45diy" path="res://script/bullet.gd" id="1_mkf8s"]
 
@@ -11,34 +11,158 @@ emission_energy_multiplier = 16.0
 [sub_resource type="BoxMesh" id="BoxMesh_mkf8s"]
 material = SubResource("StandardMaterial3D_h1aey")
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_y25gk"]
-size = Vector3(0.1, 0.1, 2)
+[sub_resource type="Curve" id="Curve_y25gk"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.675214, 0.752809), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mkf8s"]
-albedo_color = Color(1, 0.596078, 0, 1)
+[sub_resource type="CurveTexture" id="CurveTexture_mkf8s"]
+curve = SubResource("Curve_y25gk")
 
-[sub_resource type="SphereMesh" id="SphereMesh_y25gk"]
-material = SubResource("StandardMaterial3D_mkf8s")
-radius = 2.0
-height = 4.0
+[sub_resource type="Curve" id="Curve_eoqba"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0.00854702, 2), 0.0, 0.0, 0, 0, Vector2(1, 0.988764), 0.0, 0.0, 0, 0]
+point_count = 2
 
-[node name="Bullet" type="Area3D"]
+[sub_resource type="CurveTexture" id="CurveTexture_y25gk"]
+curve = SubResource("Curve_eoqba")
+
+[sub_resource type="Curve" id="Curve_26lx3"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25641, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_l5glv"]
+curve = SubResource("Curve_26lx3")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_k76ql"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+initial_velocity_min = 1.0
+initial_velocity_max = 2.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_l5glv")
+color = Color(0.140447, 0.140447, 0.140447, 1)
+alpha_curve = SubResource("CurveTexture_mkf8s")
+emission_curve = SubResource("CurveTexture_y25gk")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_eoqba"]
+transparency = 1
+vertex_color_use_as_albedo = true
+
+[sub_resource type="SphereMesh" id="SphereMesh_qncy5"]
+material = SubResource("StandardMaterial3D_eoqba")
+radial_segments = 8
+rings = 4
+
+[sub_resource type="Gradient" id="Gradient_in4mv"]
+colors = PackedColorArray(0.965021, 0.748264, 0.0303697, 1, 1, 0.27, 0.27, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_qncy5"]
+gradient = SubResource("Gradient_in4mv")
+
+[sub_resource type="Curve" id="Curve_iqq7w"]
+_limits = [0.0, 2.0, 0.0, 1.0]
+_data = [Vector2(0.00854702, 2), 0.0, 0.0, 0, 0, Vector2(1, 0.988764), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_tamys"]
+curve = SubResource("Curve_iqq7w")
+
+[sub_resource type="Curve" id="Curve_mkf8s"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.25641, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_26lx3"]
+curve = SubResource("Curve_mkf8s")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_l5glv"]
+emission_shape = 1
+emission_sphere_radius = 1.0
+direction = Vector3(0, -1, 0)
+spread = 90.0
+initial_velocity_min = 2.0
+initial_velocity_max = 4.0
+gravity = Vector3(0, 5, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_26lx3")
+color = Color(0.92, 0.904667, 0, 1)
+color_ramp = SubResource("GradientTexture1D_qncy5")
+emission_curve = SubResource("CurveTexture_tamys")
+
+[sub_resource type="Curve" id="Curve_tamys"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.716216, 1), 0.0, 0.0, 0, 0, Vector2(1, 0), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_1cfmv"]
+curve = SubResource("Curve_tamys")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_1cfmv"]
+particle_flag_align_y = true
+spread = 180.0
+initial_velocity_min = 12.0
+initial_velocity_max = 14.0
+gravity = Vector3(0, 0, 0)
+scale_min = 0.5
+scale_max = 1.5
+scale_curve = SubResource("CurveTexture_1cfmv")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_k76ql"]
+albedo_color = Color(0.943789, 0.598686, 0.165978, 1)
+emission_enabled = true
+emission = Color(0.79, 0.44635, 0.079, 1)
+emission_energy_multiplier = 2.0
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_in4mv"]
+material = SubResource("StandardMaterial3D_k76ql")
+top_radius = 0.1
+bottom_radius = 0.0
+
+[node name="Bullet" type="Node3D"]
 script = ExtResource("1_mkf8s")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(0.1, 0, 0, 0, 0.1, 0, 0, 0, 2, 0, 0, 0)
 mesh = SubResource("BoxMesh_mkf8s")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-shape = SubResource("BoxShape3D_y25gk")
+[node name="Smoke" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0302792)
+emitting = false
+amount = 12
+lifetime = 2.0
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_k76ql")
+draw_pass_1 = SubResource("SphereMesh_qncy5")
 
-[node name="Timer" type="Timer" parent="."]
-wait_time = 60.0
-autostart = true
+[node name="Fire" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0302792)
+emitting = false
+amount = 12
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_l5glv")
+draw_pass_1 = SubResource("SphereMesh_qncy5")
 
-[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
-visible = false
-mesh = SubResource("SphereMesh_y25gk")
+[node name="Debris" type="GPUParticles3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.0302792)
+emitting = false
+amount = 24
+lifetime = 0.5
+one_shot = true
+explosiveness = 1.0
+fixed_fps = 60
+process_material = SubResource("ParticleProcessMaterial_1cfmv")
+draw_pass_1 = SubResource("CylinderMesh_in4mv")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
-[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
+[node name="RayCast3D" type="RayCast3D" parent="."]
+target_position = Vector3(0, 0, 2)
+
+[node name="LifeTimer" type="Timer" parent="."]
+wait_time = 2.0
+
+[connection signal="timeout" from="LifeTimer" to="." method="_on_life_timer_timeout"]

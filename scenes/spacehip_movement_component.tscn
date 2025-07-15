@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://dcss2l2fjvb33"]
+
+[ext_resource type="Script" uid="uid://bj65difhj1xff" path="res://script/spacehip_movement_component.gd" id="1_qhiou"]
+
+[node name="SpacehipMovementComponent" type="Node3D"]
+script = ExtResource("1_qhiou")

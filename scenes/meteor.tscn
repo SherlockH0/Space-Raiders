@@ -1,0 +1,20 @@
+[gd_scene load_steps=4 format=3 uid="uid://c8qqohdvv4ge0"]
+
+[ext_resource type="ArrayMesh" uid="uid://beqxtfqst26mk" path="res://art/kenney_space-kit/Models/OBJ format/meteor.obj" id="2_83eji"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_tcwo0"]
+bounce = 1.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_tcwo0"]
+radius = 0.358948
+
+[node name="Meteor" type="RigidBody3D" groups=["gravitons"]]
+physics_material_override = SubResource("PhysicsMaterial_tcwo0")
+
+[node name="Meteor" type="MeshInstance3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, -1.1406, 0)
+mesh = ExtResource("2_83eji")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(3, 0, 0, 0, 3, 0, 0, 0, 3, 0, 0, 0)
+shape = SubResource("SphereShape3D_tcwo0")

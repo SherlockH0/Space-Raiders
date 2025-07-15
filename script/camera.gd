@@ -1,6 +1,6 @@
 extends Camera3D
 
-@export var spaceship_movement: SpaceshipMovementComponent
+@export var player: RigidBody3D
 
 @export_group("Speed effect")
 @export var default_fov: int = 85
@@ -14,15 +14,8 @@ func _process(delta: float) -> void:
 
 func speed_effect(delta: float) -> void:
 	var target_fov: float
-	if (
-		spaceship_movement.forward_speed <= 0
-		or spaceship_movement.physics_body.velocity.length() == 0
-	):
+	if player.forward_velocity <= 0:
 		target_fov = default_fov
 	else:
-		target_fov = lerp(
-			default_fov,
-			max_fov,
-			spaceship_movement.forward_speed / spaceship_movement.max_flight_speed
-		)
+		target_fov = lerp(default_fov, max_fov, player.forward_velocity / 20)
 	fov = lerp(fov, target_fov, delta * fov_smoothing_weight)

@@ -8,7 +8,7 @@ var planets: Dictionary
 
 func _ready() -> void:
 	Global.planet_on_screen.connect(_on_planet_entered)
-	Global.planet_off_screen.connect(_on_planet_exited)
+	#Global.planet_off_screen.connect(_on_planet_exited)
 
 
 func _process(delta: float) -> void:
@@ -35,8 +35,8 @@ func _on_planet_entered(planet: Node3D):
 	planet_list.add_child(label)
 	planets[str(planet)] = [planet, label]
 
-
-func _on_planet_exited(planet: Node3D):
-	var p = planets[str(planet)]
-	p[1].queue_free()
-	planets.erase(str(planet))
+#
+#func _on_planet_exited(planet: Node3D):
+	#var p = planets[str(planet)]
+	#p[1].queue_free()
+	#planets.erase(str(planet))

@@ -26,6 +26,8 @@ extends RigidBody3D
 var is_shooting := false
 var forward_velocity = 0
 
+var start_game = false
+
 var move_up := 0.0
 var roll := 0.0
 var turn := 0.0
@@ -33,24 +35,25 @@ var thrust := 0.0
 
 
 func _physics_process(delta: float) -> void:
-	var distance_to_player = global_position.distance_to(player.global_position)
-	if distance_to_player <= vision_limit:
-		look_at(player.global_position)
-		if shooting_timer.is_stopped():
-			is_shooting = true
-			shooting_timer.start()
-		if distance_to_player > min_distance:
-			thrust = -1
+	if start_game:
+		var distance_to_player = global_position.distance_to(player.global_position)
+		if distance_to_player <= vision_limit:
+			look_at(player.global_position)
+			if shooting_timer.is_stopped():
+				is_shooting = true
+				shooting_timer.start()
+			if distance_to_player > min_distance:
+				thrust = -1
+			else:
+				thrust = 0
 		else:
+			is_shooting = false
 			thrust = 0
-	else:
-		is_shooting = false
-		thrust = 0
 	# apply_torque(transform.basis.x * move_up * forward_torque_power * delta)
 	# apply_torque(transform.basis.y * roll * side_torque_power * delta)
 	# apply_torque(transform.basis.z * turn * rotate_torque * delta)
 
-	apply_central_force(transform.basis.z * thrust * thrust_power)
+		apply_central_force(transform.basis.z * thrust * thrust_power)
 
 
 func die():

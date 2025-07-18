@@ -67,6 +67,12 @@ radial_segments = 4
 rings = 10
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tuyoq"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:forward_torque_power")
+properties/1/spawn = true
+properties/1/replication_mode = 1
 
 [node name="Player" type="RigidBody3D"]
 rotation_edit_mode = 1
@@ -75,9 +81,10 @@ linear_damp = 1.0
 angular_damp = 2.0
 script = ExtResource("1_3vyb7")
 bullet = ExtResource("2_qhqgy")
-forward_torque_power = 40.0
+forward_torque_power = 100.0
 side_torque_power = 200.0
-take_off_power = 10.0
+thrust_power = 30.0
+take_off_power = 17.605
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 0, 0.012, -0.5)

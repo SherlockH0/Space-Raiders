@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://bfm7eb86ir4jy"]
+[gd_scene load_steps=26 format=3 uid="uid://bfm7eb86ir4jy"]
 
 [ext_resource type="Script" uid="uid://83w8efd45diy" path="res://script/bullet.gd" id="1_mkf8s"]
 
@@ -120,6 +120,14 @@ material = SubResource("StandardMaterial3D_k76ql")
 top_radius = 0.1
 bottom_radius = 0.0
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_mkf8s"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
 [node name="Bullet" type="Node3D"]
 script = ExtResource("1_mkf8s")
 
@@ -164,5 +172,8 @@ target_position = Vector3(0, 0, 2)
 
 [node name="LifeTimer" type="Timer" parent="."]
 wait_time = 2.0
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_mkf8s")
 
 [connection signal="timeout" from="LifeTimer" to="." method="_on_life_timer_timeout"]

@@ -35,16 +35,11 @@ size = Vector3(10, 1, 10)
 [node name="Main" type="Node3D"]
 script = ExtResource("1_tipki")
 enemy_scene = ExtResource("3_tefeu")
+player_scene = ExtResource("1_o5qli")
+metadata/_edit_vertical_guides_ = [-173.0]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource("1_sugp2")
-
-[node name="Player" parent="." groups=["gravitons"] instance=ExtResource("1_o5qli")]
-forward_torque_power = 350.0
-side_torque_power = 800.0
-rotate_torque = 10.0
-thrust_power = 30.0
-take_off_power = 15.0
 
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
 transform = Transform3D(5, 0, 0, 0, 20, 0, 0, 0, 5, 0, 10, -19.7804)
@@ -653,22 +648,6 @@ autostart = true
 [node name="Enemies" type="Node3D" parent="."]
 unique_name_in_owner = true
 
-[node name="Enemy2" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
-transform = Transform3D(-0.649979, 0, 0.759952, 0, 1, 0, -0.759952, 0, -0.649979, 543.672, 14.0896, 0.255066)
-player = NodePath("../../Player")
-
-[node name="Enemy3" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
-transform = Transform3D(0.4149, 0, -0.909867, 0, 1, 0, 0.909867, 0, 0.4149, -400.069, 14.0896, 0.255066)
-player = NodePath("../../Player")
-
-[node name="Enemy4" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
-transform = Transform3D(-0.999798, 0, -0.0200872, 0, 1, 0, 0.0200872, 0, -0.999798, 0.125244, 14.0896, -346.181)
-player = NodePath("../../Player")
-
-[node name="Enemy" parent="Enemies" node_paths=PackedStringArray("player") instance=ExtResource("3_tefeu")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -47.7218, 7.04481, 295.793)
-player = NodePath("../../Player")
-
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 script = ExtResource("8_85g3d")
 
@@ -682,13 +661,44 @@ grow_vertical = 0
 size_flags_vertical = 8
 script = ExtResource("8_tipki")
 
+[node name="MultiplayerController" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Host" type="Button" parent="CanvasLayer/MultiplayerController"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 428.0
+offset_right = 684.0
+offset_bottom = 64.0
+grow_horizontal = 2
+text = "Host"
+
+[node name="Join" type="Button" parent="CanvasLayer/MultiplayerController"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 428.0
+offset_top = 96.0
+offset_right = 684.0
+offset_bottom = 160.0
+grow_horizontal = 2
+text = "Join"
+
 [node name="SpawnRoot" type="Node" parent="."]
+
+[node name="OmniLight3D" type="OmniLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32514, 1.97618, 0)
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
 _spawnable_scenes = PackedStringArray("uid://b4sx5aas8qkwe", "uid://bfm7eb86ir4jy")
 spawn_path = NodePath("../SpawnRoot")
 
-[node name="OmniLight3D" type="OmniLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.32514, 1.97618, 0)
-
 [connection signal="timeout" from="SpawnTimer" to="." method="_on_spawn_timer_timeout"]
+[connection signal="pressed" from="CanvasLayer/MultiplayerController/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="CanvasLayer/MultiplayerController/Join" to="." method="_on_join_pressed"]

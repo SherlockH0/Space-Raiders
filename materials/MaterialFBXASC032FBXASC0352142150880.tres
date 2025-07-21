@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" load_steps=3 format=3 uid="uid://deitn8jewse0r"]
+
+[ext_resource type="Texture2D" uid="uid://qrublkakepaq" path="res://art/freeport_space_station1/textures/MaterialFBXASC032FBXASC0352142150880_baseColor.jpeg" id="1_0084o"]
+[ext_resource type="Texture2D" uid="uid://d4e22v5fsi1k1" path="res://art/freeport_space_station1/textures/MaterialFBXASC032FBXASC0352142150880_metallicRoughness.png" id="2_wsvdr"]
+
+[resource]
+resource_name = "MaterialFBXASC032FBXASC0352142150880"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+albedo_texture = ExtResource("1_0084o")
+metallic = 1.0
+metallic_texture = ExtResource("2_wsvdr")
+metallic_texture_channel = 2
+roughness = 0.0
+roughness_texture = ExtResource("2_wsvdr")
+roughness_texture_channel = 1
+ao_enabled = true
+ao_texture = ExtResource("2_wsvdr")

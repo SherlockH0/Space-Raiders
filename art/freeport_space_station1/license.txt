@@ -1,0 +1,11 @@
+Model Information:
+* title:	Freeport Space Station1
+* source:	https://sketchfab.com/3d-models/freeport-space-station1-258e7b3280ce4f1b94da53278687b24a
+* author:	Inditrion Dradnon (https://sketchfab.com/dradnon)
+
+Model License:
+* license type:	CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)
+* requirements:	Author must be credited. Commercial use is allowed.
+
+If you use this 3D model in your project be sure to copy paste this credit wherever you share it:
+This work is based on "Freeport Space Station1" (https://sketchfab.com/3d-models/freeport-space-station1-258e7b3280ce4f1b94da53278687b24a) by Inditrion Dradnon (https://sketchfab.com/dradnon) licensed under CC-BY-4.0 (http://creativecommons.org/licenses/by/4.0/)

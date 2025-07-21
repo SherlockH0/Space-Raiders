@@ -1,22 +1,22 @@
 extends Node3D
 
 var player
-var speed = 3
+var speed = 10
+
 
 @onready var ray: RayCast3D = $RayCast3D
-@onready var debris = $Debris
-@onready var smoke = $Fire
-@onready var fire = $Smoke
 
+var is_dead := false
 
 func _process(_delta: float) -> void:
-	if ray.is_colliding():
+	if not is_dead and ray.is_colliding():
 		delete()
 	position += transform.basis.z * speed
 
 
 func delete():
 	speed = 0
+	is_dead = true
 	explode()
 	var collider = ray.get_collider()
 	if collider.has_method("apply_force"):
@@ -29,16 +29,7 @@ func delete():
 
 
 func explode():
-	$MeshInstance3D.visible = false
-	debris.emitting = true
-	smoke.emitting = true
-	fire.emitting = true
-
-
-func _on_body_entered(body: Node3D) -> void:
-	if body != player:
-		delete()
-
+	pass
 
 func _on_life_timer_timeout() -> void:
 	queue_free()

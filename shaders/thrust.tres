@@ -1,0 +1,33 @@
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://bmvi7b06dnd2h"]
+
+[ext_resource type="Texture2D" uid="uid://dyiud0clybrxx" path="res://art/kenney_particle-pack/PNG (Transparent)/muzzle_04.png" id="1_1072p"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_qca76"]
+expanded_output_ports = [0]
+texture = ExtResource("1_1072p")
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx;
+
+uniform sampler2D tex_frg_2;
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+	float n_out2p1 = n_out2p0.r;
+
+
+// Output:0
+	ALPHA = n_out2p1;
+
+
+}
+"
+modes/cull = 2
+nodes/fragment/0/position = Vector2(820, -100)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_qca76")
+nodes/fragment/2/position = Vector2(-580, -80)
+nodes/fragment/connections = PackedInt32Array(2, 1, 0, 1)

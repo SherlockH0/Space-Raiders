@@ -1,0 +1,36 @@
+[gd_resource type="VisualShader" load_steps=3 format=3 uid="uid://dcl5nvuh54gqa"]
+
+[ext_resource type="Texture2D" uid="uid://by87b4j1mj1mk" path="res://art/textures/jet_flame.png" id="1_2a35r"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_xikus"]
+texture = ExtResource("1_2a35r")
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_add, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled, fog_disabled;
+
+uniform sampler2D tex_frg_2;
+
+
+
+void fragment() {
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+
+
+// Output:0
+	ALPHA = n_out2p0.x;
+
+
+}
+"
+graph_offset = Vector2(-221.76, -72)
+modes/blend = 1
+modes/cull = 2
+flags/unshaded = true
+flags/shadows_disabled = true
+flags/ambient_light_disabled = true
+flags/fog_disabled = true
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_xikus")
+nodes/fragment/2/position = Vector2(-320, 80)
+nodes/fragment/connections = PackedInt32Array(2, 0, 0, 1)

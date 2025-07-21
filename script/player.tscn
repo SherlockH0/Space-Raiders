@@ -1,10 +1,9 @@
-[gd_scene load_steps=22 format=3 uid="uid://b4sx5aas8qkwe"]
+[gd_scene load_steps=21 format=3 uid="uid://b4sx5aas8qkwe"]
 
 [ext_resource type="Script" uid="uid://b7i6lu6v3g2uq" path="res://script/player.gd" id="1_3vyb7"]
 [ext_resource type="PackedScene" uid="uid://bfm7eb86ir4jy" path="res://scenes/bullet.tscn" id="2_qhqgy"]
-[ext_resource type="Script" uid="uid://bpg28e135lnra" path="res://script/camera.gd" id="4_qlg0r"]
 [ext_resource type="Script" uid="uid://d2uuyge5idqih" path="res://scenes/canvas_layer.gd" id="4_tuyoq"]
-[ext_resource type="ArrayMesh" uid="uid://k238080ynqu2" path="res://art/kenney_space-kit/Models/OBJ format/craft_miner.obj" id="5_qlg0r"]
+[ext_resource type="Texture2D" uid="uid://by87b4j1mj1mk" path="res://art/textures/jet_flame.png" id="5_acjdt"]
 [ext_resource type="PackedScene" uid="uid://drbsrht7ykta5" path="res://scenes/battle_spaceship.tscn" id="6_tuyoq"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qlg0r"]
@@ -46,27 +45,29 @@ bg_color = Color(0, 0, 0, 1)
 ProgressBar/styles/background = SubResource("StyleBoxTexture_tuyoq")
 ProgressBar/styles/fill = SubResource("StyleBoxFlat_fjrip")
 
-[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_qlg0r"]
-emission_shape = 3
-emission_box_extents = Vector3(3, 3, 1)
-direction = Vector3(0, 0, 0)
-initial_velocity_max = 0.5
-gravity = Vector3(0, 0, 0)
-scale_max = 3.0
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2mnkm"]
+transparency = 1
+blend_mode = 1
+cull_mode = 2
+shading_mode = 0
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_color = Color(0.215686, 0.313726, 1, 1)
+albedo_texture = ExtResource("5_acjdt")
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tuyoq"]
+[sub_resource type="QuadMesh" id="QuadMesh_w7p53"]
+material = SubResource("StandardMaterial3D_2mnkm")
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_mu8im"]
+transparency = 1
+blend_mode = 1
 emission_enabled = true
-emission = Color(0.505051, 0.5033, 0.874929, 1)
-emission_energy_multiplier = 10.0
+emission = Color(0, 0, 1, 1)
+emission_energy_multiplier = 7.0
 
-[sub_resource type="SphereMesh" id="SphereMesh_fjrip"]
-material = SubResource("StandardMaterial3D_tuyoq")
-radius = 0.01
-height = 0.02
-radial_segments = 4
-rings = 10
-
-[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_tuyoq"]
+[sub_resource type="PlaneMesh" id="PlaneMesh_w3hpg"]
+material = SubResource("StandardMaterial3D_mu8im")
+size = Vector2(0.5, 0.5)
 
 [node name="Player" type="RigidBody3D"]
 rotation_edit_mode = 1
@@ -80,16 +81,8 @@ side_torque_power = 200.0
 take_off_power = 10.0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
-transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 1, -4.37114e-08, 0, -4.37114e-08, -1, -4.37114e-08, 0, 0.012, -0.5)
+transform = Transform3D(1.91069e-15, 4.37114e-08, -1, 0.757838, -0.652442, -2.85192e-08, -0.652442, -0.757838, -3.31262e-08, 0, 0.012, 0.547584)
 shape = SubResource("BoxShape3D_qlg0r")
-
-[node name="Camera3D" type="Camera3D" parent="." node_paths=PackedStringArray("player")]
-transform = Transform3D(1, 7.72515e-09, -5.96373e-08, 3.14122e-09, 0.98365, 0.18009, 6.00534e-08, -0.18009, 0.98365, 0, 2.35791, 4.60923)
-doppler_tracking = 2
-current = true
-script = ExtResource("4_qlg0r")
-player = NodePath("..")
-max_fov = 120
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." node_paths=PackedStringArray("player")]
 script = ExtResource("4_tuyoq")
@@ -119,22 +112,6 @@ show_percentage = false
 
 [node name="PlanetList" type="Node2D" parent="CanvasLayer"]
 
-[node name="Body" type="MeshInstance3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -0.343, -0.5)
-visible = false
-mesh = ExtResource("5_qlg0r")
-
-[node name="MarkerLeft" type="Marker3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0.2, 1.2)
-
-[node name="MarkerRight" type="Marker3D" parent="Body"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0.2, 1.2)
-
-[node name="GPUParticles3D" type="GPUParticles3D" parent="."]
-amount = 10
-process_material = SubResource("ParticleProcessMaterial_qlg0r")
-draw_pass_1 = SubResource("SphereMesh_fjrip")
-
 [node name="ShootingTimer" type="Timer" parent="."]
 wait_time = 0.2
 one_shot = true
@@ -142,10 +119,30 @@ one_shot = true
 [node name="GroundRay" type="RayCast3D" parent="."]
 unique_name_in_owner = true
 
-[node name="BattleSpaceship" parent="." instance=ExtResource("6_tuyoq")]
-transform = Transform3D(-8.74228e-07, 0, 20, 0, 20, 0, -20, 0, -8.74228e-07, 0, 0, 0)
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("6_tuyoq")]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, -1.47131, 0)
 
-[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
-replication_config = SubResource("SceneReplicationConfig_tuyoq")
+[node name="LeftGun" type="Marker3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -1.53097, 0.0647795, -0.544673)
+
+[node name="RightGun" type="Marker3D" parent="."]
+unique_name_in_owner = true
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 1.531, 0.065, -0.545)
+
+[node name="CameraTarget" type="Marker3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.50207, 9.11146)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(0.00845212, -0.478559, 0.0632008, 3.14866e-11, 0.0292217, 1.03518, -0.714227, -0.00566324, 0.000747914, 0, 0.68014, 5.42232)
+mesh = SubResource("QuadMesh_w7p53")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(5.53877e-10, 0.0292217, 1.03518, -0.00845212, 0.478559, -0.0632008, -0.714227, -0.00566324, 0.000747914, 0, 0.68014, 5.42232)
+mesh = SubResource("QuadMesh_w7p53")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0.742482, 5.03555)
+mesh = SubResource("PlaneMesh_w3hpg")
 
 [connection signal="timeout" from="ShootingTimer" to="." method="_on_shooting_timer_timeout"]

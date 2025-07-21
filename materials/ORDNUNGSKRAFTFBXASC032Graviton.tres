@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://c18tsn4ngpo28"]
+
+[ext_resource type="Texture2D" uid="uid://uxoy4mctm7gg" path="res://art/freeport_space_station1/textures/ORDNUNGSKRAFTFBXASC032Graviton_emissive.jpeg" id="1_rr38e"]
+
+[resource]
+resource_name = "ORDNUNGSKRAFTFBXASC032Graviton"
+cull_mode = 2
+albedo_color = Color(0, 0, 0, 1)
+emission_enabled = true
+emission_energy_multiplier = 5.16312
+emission_texture = ExtResource("1_rr38e")

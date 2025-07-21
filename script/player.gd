@@ -5,9 +5,11 @@ extends RigidBody3D
 @onready var body: MeshInstance3D = $Body
 @onready var speed_label: ProgressBar = %Speed
 @onready var shooting_timer: Timer = $ShootingTimer
-@onready var marker_left: Marker3D = $Body/MarkerLeft
-@onready var marker_right: Marker3D = $Body/MarkerRight
+@onready var marker_left: Marker3D = %LeftGun
+@onready var marker_right: Marker3D = %RightGun
 @onready var health_label: ProgressBar = $CanvasLayer/Health
+
+@onready var camera_target: Marker3D = $CameraTarget
 
 @onready var ground_ray: RayCast3D = %GroundRay
 

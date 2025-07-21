@@ -1,0 +1,67 @@
+[gd_resource type="VisualShader" load_steps=6 format=3 uid="uid://b60alr1e17wto"]
+
+[ext_resource type="Texture2D" uid="uid://dhn7rgd8ptwy8" path="res://art/kenney_particle-pack/PNG (Transparent)/trace_06.png" id="1_lca6b"]
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_mkjgd"]
+expanded_output_ports = [0]
+texture = ExtResource("1_lca6b")
+
+[sub_resource type="VisualShaderNodeTexture2DParameter" id="VisualShaderNodeTexture2DParameter_spgkp"]
+parameter_name = "Color_Texture"
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeTexture" id="VisualShaderNodeTexture_slfc2"]
+source = 5
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeFloatParameter" id="VisualShaderNodeFloatParameter_alc4v"]
+parameter_name = "Glow"
+
+[resource]
+code = "shader_type spatial;
+render_mode blend_mix, depth_draw_opaque, cull_disabled, diffuse_lambert, specular_schlick_ggx, unshaded, shadows_disabled, ambient_light_disabled, fog_disabled;
+
+uniform sampler2D Color_Texture : source_color;
+uniform sampler2D tex_frg_2;
+uniform float Glow;
+
+
+
+void fragment() {
+	vec4 n_out4p0;
+// Texture2D:4
+	n_out4p0 = texture(Color_Texture, UV);
+
+
+// Texture2D:2
+	vec4 n_out2p0 = texture(tex_frg_2, UV);
+	float n_out2p1 = n_out2p0.r;
+
+
+// FloatParameter:5
+	float n_out5p0 = Glow;
+
+
+// Output:0
+	ALBEDO = vec3(n_out4p0.xyz);
+	ALPHA = n_out2p1;
+	EMISSION = vec3(n_out5p0);
+
+
+}
+"
+modes/cull = 2
+flags/unshaded = true
+flags/shadows_disabled = true
+flags/ambient_light_disabled = true
+flags/fog_disabled = true
+nodes/fragment/0/position = Vector2(1260, -300)
+nodes/fragment/2/node = SubResource("VisualShaderNodeTexture_mkjgd")
+nodes/fragment/2/position = Vector2(59.9526, 678.758)
+nodes/fragment/3/node = SubResource("VisualShaderNodeTexture2DParameter_spgkp")
+nodes/fragment/3/position = Vector2(-480, -1160)
+nodes/fragment/4/node = SubResource("VisualShaderNodeTexture_slfc2")
+nodes/fragment/4/position = Vector2(240, -1000)
+nodes/fragment/5/node = SubResource("VisualShaderNodeFloatParameter_alc4v")
+nodes/fragment/5/position = Vector2(280, -100)
+nodes/fragment/connections = PackedInt32Array(2, 1, 0, 1, 4, 0, 0, 0, 3, 0, 4, 2, 5, 0, 0, 5)
